@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 let now = new Date();
 let li = document.querySelector("li");
@@ -46,11 +46,53 @@ function showWeather(response) {
   let temperature = Math.round(response.data.main.temp);
   let latitude = response.data.coord.lat;
   let longitude = response.data.coord.lon;
-  h1.innerHTML = `It is currently ${temperature}°in ${response.data.name}.`;
+  h1.innerHTML = `It is currently ${temperature}° in ${response.data.name}.`;
+  updateWeatherEmoji(response.data.weather[0].main);
 }
 
 let button = document.querySelector("button");
-button.addEventListener("click", function() {
+button.addEventListener("click", function () {
   navigator.geolocation.getCurrentPosition(handlePosition);
 });
+
 navigator.geolocation.getCurrentPosition(handlePosition);
+function updateWeatherEmoji(weather) {
+  const weatherEmoji = document.getElementById("weather-emoji");
+
+  switch (weather) {
+    case "Thunderstorm":
+      weatherEmoji.innerText = "⛈️";
+      break;
+    case "Drizzle":
+    case "Rain":
+      weatherEmoji.innerText = "🌧️";
+      break;
+    case "Snow":
+      weatherEmoji.innerText = "❄️";
+      break;
+    case "Mist":
+    case "Smoke":
+    case "Haze":
+    case "Dust":
+    case "Fog":
+    case "Sand":
+    case "Ash":
+    case "Squall":
+    case "Tornado":
+      weatherEmoji.innerText = "🌫️";
+      break;
+    case "Clear":
+      weatherEmoji.innerText = "☀️";
+      break;
+    case "Clouds":
+      weatherEmoji.innerText = "☁️";
+      break;
+    default:
+      weatherEmoji.innerText = "🌤️";
+      break;
+  }
+}
+function displayWeatherData(data) {
+  const weatherCondition = data.weather[0].main;
+  updateWeatherEmoji(weatherCondition);
+}
